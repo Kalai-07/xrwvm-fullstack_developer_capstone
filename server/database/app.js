@@ -59,20 +59,46 @@ app.get('/fetchReviews/dealer/:id', async (req, res) => {
 // Express route to fetch all dealerships
 app.get('/fetchDealers', async (req, res) => {
 //Write your code here
+try {
+    const documents = await Dealerships.find();
+    res.json(documents);
+  } catch (error) {
+    res.status(500).json({ error: 'Error fetching dealerships' });
+  }
 });
 
 // Express route to fetch Dealers by a particular state
 app.get('/fetchDealers/:state', async (req, res) => {
 //Write your code here
+try {
+    const stateParam = req.params.state; // ensure case-insensitive match
+    const documents = await Dealerships.find({ state: stateParam });
+    res.json(documents);
+  } catch (error) {
+    res.status(500).json({ error: 'Error fetching dealerships by state' });
+  }
 });
 
 // Express route to fetch dealer by a particular id
 app.get('/fetchDealer/:id', async (req, res) => {
-//Write your code here
-});
-
+    try {
+      const dealerId = Number(req.params.id); // convert to integer
+      const dealer = await Dealerships.findOne({ id: dealerId });
+  
+      if (!dealer) {
+        return res.status(404).json({ error: 'Dealer not found' });
+      }
+  
+      res.json(dealer);
+    } catch (error) {
+      console.error('Error fetching dealer:', error);
+      res.status(500).json({ error: 'Error fetching dealer' });
+    }
+  });
+  
+  
 //Express route to insert review
-app.post('/insert_review', express.raw({ type: '*/*' }), async (req, res) => {
+app.post('/insert_review', express.raw({ type: '/' }), async (req, res) => {
   data = JSON.parse(req.body);
   const documents = await Reviews.find().sort( { id: -1 } )
   let new_id = documents[0]['id']+1
@@ -98,7 +124,8 @@ app.post('/insert_review', express.raw({ type: '*/*' }), async (req, res) => {
   }
 });
 
-// Start the Express server
+// Start the Express server 
 app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+    console.log(`Server is running on http://localhost:${port}`);
+  });
+  
