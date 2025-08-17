@@ -117,16 +117,23 @@ def get_dealer_reviews(request, dealer_id):
 # def add_review(request):
 # ...
 def add_review(request):
-    if(request.user.is_anonymous == False):
+    if request.user.is_anonymous == False:
         data = json.loads(request.body)
         try:
-            response = post_review(data)
-            return JsonResponse({"status":200})
-        except:
-            return JsonResponse({"status":401,"message":"Error in posting review"})
+            # Insert the review
+            post_review(data)
+
+            # After adding, fetch dealer details again
+            dealer_id = data.get("dealer_id")
+            dealer = get_request(f"/fetchDealer/{dealer_id}")
+
+            return JsonResponse({"status": 200, "dealer": dealer})
+        except Exception as e:
+            print(e)
+            return JsonResponse({"status": 401, "message": "Error in posting review"})
     else:
-        return JsonResponse({"status":403,"message":"Unauthorized"})
-        
+        return JsonResponse({"status": 403, "message": "Unauthorized"})
+
 def get_cars(request):
     count = CarMake.objects.filter().count()
     print(count)
