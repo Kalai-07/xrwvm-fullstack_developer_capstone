@@ -12,7 +12,7 @@ urlpatterns = [
 
     path('logout', views.logout_user, name='logout'),
     path('register', views.register, name='register'),
-
+    path(route='get_cars', view=views.get_cars, name ='getcars'),
     path(route='login', view=views.login_user, name='login'),
     path(route='get_dealers', view=views.get_dealerships, name='get_dealers'),
     path(route='get_dealers/<str:state>', view=views.get_dealerships, name='get_dealers_by_state'),
