@@ -1,12 +1,11 @@
 # Uncomment the required imports before adding the code
 
-from django.shortcuts import render
+
 
 from django.contrib.auth.models import User
-from django.shortcuts import get_object_or_404, render
+
 from django.contrib.auth import logout
-from django.contrib import messages
-from datetime import datetime
+
 from django.http import JsonResponse
 from .models import CarMake, CarModel
 from .populate import initiate  # you'll create this next
@@ -59,7 +58,8 @@ def logout_user(request):
 # ...
 def register(request):
     if request.method != "POST":
-        return JsonResponse({"status": False, "error": "Invalid method"}, status=400)
+        return JsonResponse({"status":
+        False, "error": "Invalid method"}, status=400)
 
     data = json.loads(request.body.decode("utf-8"))
     username = data.get("userName", "").strip()
@@ -155,7 +155,8 @@ def add_review(request):
             return JsonResponse({"status": 200, "dealer": dealer})
         except Exception as e:
             print(e)
-            return JsonResponse({"status": 401, "message": "Error in posting review"})
+            return JsonResponse({"status": 401,
+                "message": "Error in posting review"})
     else:
         return JsonResponse({"status": 403, "message": "Unauthorized"})
 
@@ -168,5 +169,6 @@ def get_cars(request):
     car_models = CarModel.objects.select_related("car_make")
     cars = []
     for car_model in car_models:
-        cars.append({"CarModel": car_model.name, "CarMake": car_model.car_make.name})
+        cars.append({"CarModel": car_model.name, 
+                     "CarMake": car_model.car_make.name})
     return JsonResponse({"CarModels": cars})
