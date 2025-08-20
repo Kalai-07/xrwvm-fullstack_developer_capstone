@@ -8,16 +8,16 @@ from django.contrib.auth import logout
 
 from django.http import JsonResponse
 from .models import CarMake, CarModel
-from .populate import initiate  # you'll create this next
+ # you'll create this next
 
-from django.http import JsonResponse
+
 from django.contrib.auth import login, authenticate
 import logging
 import json
 from django.views.decorators.csrf import csrf_exempt
 from .populate import initiate
 from .restapis import get_request, analyze_review_sentiments, post_review
-from .restapis import get_request, analyze_review_sentiments, post_review
+
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
